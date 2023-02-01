@@ -1,0 +1,8 @@
+.vscode
+sample/__pycache__/*
+user/__pycache__/*
+user/migrations/__pycache__/*
+Equipment/__pycache__/*
+Equipment/migrations/__pycache__/*
+request/__pycache__/*
+request/migrations/__pycache__/*

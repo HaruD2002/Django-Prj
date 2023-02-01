@@ -1,0 +1,42 @@
+{%extends 'main/base.html'%}
+
+{%block content%}
+<div class="container">
+    <div class="row">
+        User request list
+    </div>
+    <div class="row">
+        <div class="col-md-12 table-responsive">
+            <table class="table table-striped table-hover">
+                <thead>
+                    <tr class="user-select-none">
+                        <th scope="col">#</th>
+                        <th scope="col">Request User</th>
+                        <th scope="col">Catagory</th>
+                        <th scope="col">Equipment</th>
+                        <th scope="col">Reason</th>
+                        <th scope="col">Expected return date</th>
+                        <th scope="col">Action</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {%for request in request_list_all%}
+                    <tr>
+                        <th scope="row" class="user-select-none">{{forloop.counter}}</th>
+                        <td>{{request.user}}</td>
+                        <td>{{request.equipment.catagory_id}}</td>
+                        <td>{{request.equipment}}</td>
+                        <td>{{request.reason}}</td>
+                        <td>{{request.expect_return_date|date:'d/m/Y'}}</td>
+                        <td>
+                            <a class='btn btn-outline-danger' href="{%url 'request:admins_rejected' request.id%}">Decline</a>
+                            <a class='btn btn-outline-success' href="{%url 'request:admins_accepted' request.id%}">Accepted</a>
+                        </td>
+                    </tr>
+                    {%endfor%}
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+{%endblock%}

@@ -1,0 +1,181 @@
+{%extends 'main/base.html'%}
+{%block title%}All User {%endblock%}
+
+{%block content%}
+<style>
+    small {
+        font-size: smaller;
+    }
+
+    @media (min-width: 420px) and (max-width: 9999px) {
+
+        #mytable th,
+        td {
+            white-space: nowrap !important;
+        }
+    }
+</style>
+<div class="container">
+    <div class="row pt-5">
+        <p class="h1 display-2" style="user-select:none;"> List of all user</p>
+    </div>
+
+    <div class="pt-3 mx-auto pb-1">
+        <a href="{% url 'user:create_user'%}" class="btn btn-outline-success mx-auto">
+            Create new user
+        </a>
+    </div>
+    <div class="pb-2 pt-2">
+        {% for message in messages %}
+        <div class="container-fluid p-0">
+            <div class="alert {{ message.tags }} alert-dismissible fade show" role="alert">
+                {{ message }}
+                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+    <div class="row">
+        <div class="table-responsive">
+            <table class="table table-striped table-hover" id="mytable">
+                <thead>
+                    <tr>
+                        <th scope="col" style="user-select:none;">ID</th>
+                        <th scope="col" style="user-select:none;">Username</th>
+                        <th scope="col" style="user-select:none;">First name</th>
+                        <th scope="col" style="user-select:none;">Last name</th>
+                        <th scope="col" style="user-select:none;">Email</th>
+                        <th scope="col" style="user-select:none;">Date of birth</th>
+                        <th scope="col" style="user-select:none;">is admin</th>
+                        <th scope="col" style="user-select:none;">is staff</th>
+                        <th scope="col" style="user-select:none;">is active</th>
+                        <th scope="col" style="user-select:none;">Update</th>
+                        <th scope="col" style="user-select:none;">Delete</th>
+                        <th scope="col" style="user-select:none;">Restricted</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {%for user_m in users_list%}
+                    <tr>
+                        <th scope="row" style="user-select:none;">
+                            <p class="d-flex justify-content-center align-content-between align-items-center">
+                                {{forloop.counter}}</p>
+                        </th>
+                        <td style="user-select:none;">
+                            <a style="text-decoration:none;"
+                                href="{% url 'user:profile' user_m.username %}">{{user_m.username}}</a>
+                        </td>
+                        <td style="user-select:none;">
+                            <p>{{user_m.first_name}}</p>
+                        </td>
+                        <td style="user-select:none;">
+                            <p>{{user_m.last_name}}</p>
+                        </td>
+                        <td style="user-select:none;">
+                            <p>{{user_m.email}}</p>
+                        </td>
+                        <td style="user-select:none;">
+                            <p>{{user_m.date_of_birth}}</p>
+                        </td>
+                        <td>
+                            {%if user_m.is_superuser%}
+                            <div class="form-check mx-auto d-flex justify-content-center align-content-center">
+                                <input class="form-check-input" type="checkbox" id="is_admin" disabled checked>
+                            </div>
+                            {%else%}
+                            <div class="form-check mx-auto d-flex justify-content-center align-content-center">
+                                <input class="form-check-input" type="checkbox" id="is_admin" disabled>
+                            </div>
+                            {%endif%}
+                        </td>
+                        <td>
+                            {%if user_m.is_staff%}
+                            <div class="form-check mx-auto d-flex justify-content-center align-content-center">
+                                <input class="form-check-input" type="checkbox" id="is_admin" disabled checked>
+                            </div>
+                            {%else%}
+                            <div class="form-check mx-auto d-flex justify-content-center align-content-center">
+                                <input class="form-check-input" type="checkbox" id="is_admin" disabled>
+                            </div>
+                            {%endif%}
+                        </td>
+                        <td style="user-select:none;">
+                            {%if user_m.is_active%}
+                            <div class="form-check mx-auto d-flex justify-content-center align-content-center">
+                                <input class="form-check-input" type="checkbox" id="is_admin" disabled checked>
+                            </div>
+                            {%else%}
+                            <div class="form-check mx-auto d-flex justify-content-center align-content-center">
+                                <input class="form-check-input" type="checkbox" id="is_admin" disabled>
+                            </div>
+                            {%endif%}
+                        </td>
+                        <td>
+                            <a href="{% url 'user:update_user' user_m.username%}" class="nav-link"
+                                style="text-decoration:none;user-select:none;">Update Profile</a>
+                            <a href="{% url 'user:reset_password' user_m.username %}" class="nav-link"
+                                style="text-decoration:none; user-select:none;">Hard Reset Password</a>
+                        </td>
+                        <td>
+                            {%if user_m.username != user.username%}
+                            <!-- Button trigger modal -->
+                            <a type="button" class="btn btn-outline-warning btn-sm" data-bs-toggle="modal"
+                                data-bs-target="#warningdelete{{user_m.username}}">
+                                Delete User
+                            </a>
+                            {%endif%}
+                            <!-- Modal -->
+                            <div class="modal fade" id="warningdelete{{user_m.username}}" tabindex="-1"
+                                data-bs-backdrop="static" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                                <div class="modal-dialog modal-dialog-centered">
+                                    <div class="modal-content">
+                                        <div class="modal-header">
+                                            <h5 class="modal-title lead fw-bold" id="exampleModalLabel"
+                                                style="user-select: none;">Delete the user {{user_m.username}}?</h5>
+                                        </div>
+                                        <div class="modal-body">
+                                            Doyou want to delete this User?
+                                            <br><br>
+                                            <div><small class="text-danger" style="user-select: none;"><strong>Beware:
+                                                    </strong>This action will result for the user to be permarnently
+                                                    delete
+                                                    from the system</small></div>
+                                        </div>
+                                        <div class="modal-footer">
+                                            <button type="button" class="btn btn-outline-secondary"
+                                                data-bs-dismiss="modal">Close</button>
+
+                                            <a class="btn btn-outline-danger"
+                                                href="{% url 'user:delete_user' user_m.username%}"
+                                                style="text-decoration: none;">
+                                                Delete
+                                            </a>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </td>
+                        <td>
+                            <div class="container">
+                                {%if user_m.username != user.username%}
+                                <div class="row pb-3">
+                                    <a href="{%url 'user:unban_user' user_m.username%}"
+                                        class="btn btn-outline-warning">Unban</a>
+                                </div>
+                                <div class="row pb-3">
+                                    <a href="{%url 'user:ban_user' user_m.username%}"
+                                        class="btn btn-outline-danger">Ban</a>
+                                </div>
+                                {%endif%}
+                            </div>
+                        </td>
+                    </tr>
+                    {%endfor%}
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+
+
+{%endblock%}

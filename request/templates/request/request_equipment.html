@@ -1,0 +1,52 @@
+{%extends 'main/base.html'%}
+
+{%block title%}All device{%endblock%}
+
+{%load crispy_forms_tags%}
+
+{%block content%}
+<div class="container">
+    <div class="row pt-5">
+        <div class="col-sm-6">
+            <p class="lead display-5" style="user-select:none;">Request for an equipment</p>
+            {% for message in messages %}
+            <div class="container-fluid p-0">
+                <div class="alert {{ message.tags }} alert-dismissible fade show" role="alert">
+                    <p style="user-select:none;">{{ message }}</p>                    
+                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                </div>
+            </div>
+            {% endfor %}
+            <form method="post">
+                {%csrf_token%}
+
+                {{form|crispy}}
+                <div class="pt-4">
+                    <!-- <button type="submit" class="btn btn-outline-success">Submit</button>
+                    <a href="{%url 'request:my_request' user.username%}" class="btn btn-outline-secondary">Cancel</a> -->
+                </div>
+            </form>
+        </div>
+        <div class="col-sm-6 ps-5 pt-3">
+            <div class="container pt-5">
+                <div class="card" style="width: 18rem;">
+                    <div class="card-body" style="user-select:none;">
+                        <h5 class="card-title">Request policy</h5>
+                        <div class="card-text">
+                            <p>Some quick example text to build on the card title and make up the bulk of
+                                the card's content.</p>
+                            <p>Some quick example text to build on the card title and make up the bulk of
+                                the card's content.</p>
+                            <p>Some quick example text to build on the card title and make up the bulk of
+                                the card's content.</p>
+                            <p>Some quick example text to build on the card title and make up the bulk of
+                                the card's content.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+{%endblock%}

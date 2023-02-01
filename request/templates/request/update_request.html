@@ -1,0 +1,19 @@
+{%extends 'main/base.html'%}
+{%load crispy_forms_tags%}
+{%block content%}
+<div class="container">
+    <div class="row">
+        <div class="lead display-1 user-select-none pt-5 pb-5">Update request</div>
+    </div>
+    <div class="row">
+        <div class="col-md-12">
+            <form method="post" action="{%url 'request:update_request' request.id%}">
+                {%csrf_token%}
+                {{form|crispy}}
+                <input type="submit" value='Save change' class='btn btn-outline-success'>
+                <a href="{%url 'request:my_request_device' user.username%}" class='btn btn-outline-secondary'>Cancel</a>
+            </form>
+        </div>
+    </div>
+</div>
+{%endblock%}

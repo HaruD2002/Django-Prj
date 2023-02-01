@@ -1,0 +1,89 @@
+{%extends 'main/base.html'%}
+
+{%block title%}Create new profile {%endblock%}
+
+{%block content%}
+
+<div class="container">
+    <div class="row pt-4">
+        <p class="h4">Create new user</p>
+    </div>
+    <div class="row pt-2">
+        <form method="post">
+            {%csrf_token%}
+
+            <div class="row mb-3">
+                <div class="col mx-auto">
+                    <label class="font-weight-bold">{{ form.first_name.label}}</label>
+                    <div class="mt-3">
+                        {{form.first_name}}
+                    </div>
+                </div>
+
+                <div class="col mx-auto">
+                    <label class="font-weight-bold">{{ form.last_name.label}}</label>
+                    <div class="mt-3">
+                        {{form.last_name}}
+                    </div>
+                </div>
+            </div>
+            <div class="mb-3 mx-auto">
+                <label class="font-weight-bold">{{ form.username.label}}</label>
+                <div class="mt-3">
+                    {{form.username}}
+                </div>
+            </div>
+
+            <div class="mb-3 mx-auto">
+                <label class="font-weight-bold">{{ form.email.label}}</label>
+                <div class="mt-3">
+                    {{form.email}}
+                </div>
+            </div>
+
+            <div class="row mb-3">
+                <div class="col mx-auto">
+                    <label class="font-weight-bold">{{ form.password1.label}}</label>
+                    <div class="mt-3">
+                        {{form.password1}}
+                    </div>
+                </div>
+
+                <div class="col mx-auto">
+                    <label class="font-weight-bold">{{ form.password2.label}}</label>
+                    <div class="mt-3">
+                        {{form.password2}}
+                    </div>
+                </div>
+            </div>
+
+            <div class="mb-3 mx-auto">
+                <label class="font-weight-bold">{{ form.date_of_birth.label}}</label>
+                <div class="mt-3">
+                    {{form.date_of_birth}}
+                </div>
+            </div>
+            {%if form.errors%}
+            {{form.errors}}
+            {%endif%}
+
+            <div class="mb-5 mx-auto">
+                <div class="form-check">
+                    {{form.is_superuser}}
+                    <label class="form-check-label" for="is_admin">
+                        Create new admin
+                    </label>
+                </div>
+                <div class="form-check">
+                    {{form.is_staff}}
+                    <label class="form-check-label" for="is_staff">
+                        Add to staff
+                    </label>
+                </div>
+            </div>
+            <button type="submit" class="btn btn-success col-2">Create</button>
+            <a href="{% url 'user:get_all_users' %}" class="btn btn-danger col-2">Cancel</a>
+        </form>
+    </div>
+</div>
+{%endblock%}

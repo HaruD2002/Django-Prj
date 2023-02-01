@@ -1,0 +1,41 @@
+{%extends 'main/base.html'%}
+
+{%load crispy_forms_tags%}
+{%block content%}
+<div class="container">
+    <div class="row pt-5 pb-5 user-select-none">
+        <p class="lead display-3">
+            Create new request
+        </p>
+    </div>
+    <div class="row">
+        <div class="col-md-6">
+            <form method="post">
+                {%csrf_token%}
+                {{form|crispy}}
+                <button type="submit" class="btn btn-outline-success">Submit</button>
+                <a class="btn btn-outline-secondary" href="{%url 'request:current_request' user.username%}">Cancel</a>
+            </form>
+        </div>
+        <div class="col-md-6">
+            <div class="card" style="width: 18rem;">
+                <div class="card-body user-select-none">
+                    <h5 class="card-title">Request Policy</h5>
+                    <h6 class="card-subtitle mb-2 text-muted">Apply to all employees</h6>
+                    <p class="card-text">The Company will retain Your Personal Data only for as long as is necessary for
+                        the purposes set out in this Privacy Policy.
+                        card's content.</p>
+                    <p class="card-text">Your information, including Personal Data, is processed at the Company's
+                        operating offices and in any other places where the parties involved in the processing are
+                        located.</p>
+                    <p class="card-text">
+                        If you have any questions about this Policy, You can contact us:<br>
+                        <strong class="user-select-auto"> admin@admin.com</strong>
+                    </p>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{{ form.media.js }}
+{%endblock%}

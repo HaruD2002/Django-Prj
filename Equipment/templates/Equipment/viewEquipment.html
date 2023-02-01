@@ -1,0 +1,170 @@
+{%extends 'main/base.html'%}
+
+{%block title%}All device{%endblock%}
+
+{%load crispy_forms_tags%}
+
+{%block content%}
+<style>
+    label {
+        user-select: none;
+    }
+</style>
+<div class="container">
+    <div class="row pt-5 pb-3">
+        <p class="h1 notAllows">All device</p>
+    </div>
+    <div class="row">
+        <div class="container pt-2">
+            {%if user.is_superuser%}
+            <!-- Button trigger device model modal -->
+            <button type="button" class="btn btn-outline-success" data-bs-toggle="modal" data-bs-target="#deviceCreate">
+                New device
+            </button>
+
+            <button class='btn btn-outline-primary' data-bs-target="#NewCata" data-bs-toggle="modal"
+                data-bs-dismiss="modal">New catagory</button>
+            {%endif%}
+
+            <!-- Modal -->
+            <div class="modal fade" id="deviceCreate" aria-labelledby="createDevice" data-bs-keyboard="false"
+                data-bs-backdrop="static" aria-hidden="true">
+                <div class="modal-dialog modal-dialog-centered">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title notAllows" id="exampleModalLabel">New device</h5>
+                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                        </div>
+                        <div class="modal-body">
+                            <form method="POST" action="">
+                                {%csrf_token%}
+                                <label for="cata_ id" class="form-label notAllows">Catagory</label>
+                                <select name="cata_id" id="cata_id" class="form-select form-select-lg" required>
+                                    <option value=""></option>
+                                    {%for cata in catagory%}
+                                    <option value="{{cata.catagory_id}}">{{cata.catagory_name}}</option>
+                                    {%endfor%}
+                                </select>
+                                <label for="equip_id" class="form-label notAllows">Equipment ID</label>
+                                <input type="text" name="equip_id" id="equip_id" class="form-control"
+                                    placeholder="Enter Equipment id" required />
+                                <label for="equip_name" class="form-label notAllows">Equipment name</label>
+                                <input type="text" name="equip_name" id="equip_name" class="form-control"
+                                    placeholder="Enter Equipment name" required />
+                                <label for="equip_des" class="form-label notAllows">Equipment Description</label>
+                                <textarea name="equip_des" id="equip_des" class="form-control"
+                                    placeholder="Enter Equipment Description" required></textarea>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-outline-secondary"
+                                data-bs-dismiss="modal">Close</button>
+                            <button type="submit" class="btn btn-outline-success">Save</button>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <script>
+            $('body').on('shown.bs.modal', '.modal', function () {
+                $('#cata_id').select2({
+                    placeholder: "Choose the device catagory",
+                    dropdownParent: $('#deviceCreate'),
+                    "language": {
+                        "noResults": function () {
+                            return `No catagory found <a class='btn btn-link'data-bs-target="#NewCata" data-bs-toggle="modal" data-bs-dismiss="modal">create new catagory?</a>`;
+                        }
+                    },
+                    escapeMarkup: function (markup) {
+                        return markup;
+                    }
+                });
+            });
+        </script>
+        <div class="modal fade" data-bs-backdrop="static" id="NewCata" aria-hidden="true" tabindex="-1">
+            <div class="modal-dialog modal-dialog-centered">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="exampleModalToggleLabel2">New catagory</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body">
+                        <form method="post" action="{%url 'equipment:create_catagory'%}">
+                            {%csrf_token%}
+                            {{catagoryform|crispy}}
+
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">Close</button>
+                        <button type="submit" class="btn btn-outline-success">Save</button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- Display message when client return to the html template-->
+        <div class="row pt-3">
+            {% for message in messages %}
+            <div class="container-fluid p-0">
+                <div class="alert {{ message.tags }} alert-dismissible fade show" role="alert">
+                    {{ message }}
+                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+
+        <!--Display equipment list-->
+        <div class="row pb-5">
+            <div class="table-responsive">
+                <table class="table table-striped table-hover">
+                    <thead>
+                        <tr>
+                            <th scope="col" class="notAllows">Equipment</th>
+                            <th scope="col" class="notAllows">Catagory</th>
+                            <th scope="col" class="notAllows">Equiment name</th>
+                            <th scope="col" class="notAllows">Equiment description</th>
+                            <th scope="col" class="notAllows">Equipment register date</th>
+                            {%if user.is_superuser%}
+                            <th scope="col" class="notAllows">Edit Equipment</th>
+                            <th scope="col" class="notAllows">Delete Equipment</th>
+                            {%endif%}
+                        </tr>
+                    </thead>
+                    <tbody class="overflow-auto">
+                        {%for Equipemnt in Equipemnts%}
+                        <tr>
+                            <th scope="row" class="notAllows">
+                                <p>{{Equipemnt.equipment_id}}</p>
+                            </th>
+
+                            <td>
+                                <p>{{Equipemnt.catagory_id}}</p>
+                            </td>
+                            <td>
+                                <p>{{Equipemnt.equipment_name}}</p>
+                            </td>
+                            <td>
+                                <p>{{Equipemnt.equiment_description}}</p>
+                            </td>
+                            <td>
+                                <p>{{Equipemnt.date_obtained|date:"d/m/Y"}}</p>
+                            </td>
+                            {%if user.is_superuser%}
+                            <td>
+                                <a href="{% url 'equipment:update_equipment' Equipemnt.equipment_id %}"
+                                    class="notAllows">Edit
+                                    Info</a>
+                            </td>
+                            <td>
+                                <a href="{% url 'equipment:delete_equipment' Equipemnt.equipment_id %}"
+                                    class="notAllows">Delete</a>
+                            </td>
+                            {%endif%}
+                        </tr>
+                        {%endfor%}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+        {%endblock%}

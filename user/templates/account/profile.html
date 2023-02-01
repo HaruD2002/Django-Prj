@@ -1,0 +1,59 @@
+{%extends 'main/base.html'%}
+{%block title%}{{user.username}}'s Profile {%endblock%}
+{%block content%}
+
+<div class="container d-flex justify-content-center">
+    <div class="pt-5 w-50">
+        {% for message in messages %}
+        <div class="container-fluid p-0">
+            <div class="alert {{ message.tags }} alert-dismissible fade show" role="alert">
+                {{ message }}
+                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+            </div>
+        </div>
+        {% endfor %}
+        <div class="row">
+            <div class="jumbotron border rounded p-4  border-dark bg-light">
+                <p class="lead"><a href="{% url 'user:profile' get_user.username %}" class="text-muted"
+                        style="text-decoration:none;user-select: none;" id="my_username">@{{get_user.username}}</a></p>
+                <hr class="my-4">
+                <div class="container">
+                    <p style="user-select: none;">Email: {{get_user.email|default_if_none:"default email"}}</p>
+                    <p style="user-select: none;">User name: {{get_user.get_full_name|default:user.username}}</p>
+                    <p style="user-select: none;">Date of Birth: {{get_user.date_of_birth| date:"M d, Y"}}</p>
+                    <p style="user-select: none;">Date Joined: {{get_user.date_joined|date:"M d, Y"}}</p>
+                </div>
+
+                {%if user.username == get_user.username%}
+                <div class='d-flex justify-content-end'>
+                    <div class="pe-3">
+                        <a class="btn btn-warning" href="{% url 'user:update_user' get_user.username%}"
+                            role="button">Update
+                            User's
+                            Profile</a>
+                    </div>
+                    <div class='pe-3'>
+                        <a class="btn btn-danger" href="{% url 'user:update_user_password' get_user.username %}"
+                            role="button">Change User
+                            Password</a>
+                    </div>
+                </div>
+                {%endif%}
+            </div>
+        </div>
+    </div>
+</div>
+
+<script src="https://code.jquery.com/jquery-3.6.1.min.js"
+    integrity="sha256-o88AwQnZB+VDvE9tvIXrMQaPlFFSUTR+nldQm1LuPXQ=" crossorigin="anonymous"></script>
+
+<script>
+    $(document).ready(() => {
+        $('#my_username').hover((event) => {
+            event.target.style.fontWeight = '600';
+        }, (event) => {
+            event.target.style.fontWeight = 'normal';
+        })
+    })
+</script>
+{%endblock%}

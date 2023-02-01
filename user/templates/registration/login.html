@@ -1,0 +1,55 @@
+{%extends 'main/base.html'%}
+
+{%block title%} User|Login {%endblock%}
+
+{%block content%}
+
+<div class="container">
+    <div class="row">
+        <div class="col-12 col-sm- col-sm-8  mx-auto p-5">
+            <div class="mb-3 d-flex justify-content-center">
+                <p class="h2 mb-3 font-weight-bold font-monospace">Sign In</p>
+            </div>
+            <form action="{%url 'login'%}" method="post">
+                {% for message in messages %}
+                <div class="container-fluid p-0">
+                    <div class="alert {{ message.tags }} alert-dismissible fade show" role="alert">
+                        {{ message }}
+                        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                    </div>
+                </div>
+                {% endfor %}
+                {%csrf_token%}
+                {% if form.errors %}
+                <div class="alert alert-warning alert-dismissible fade show" role="alert">
+                    Error: Username or Password not correct!
+                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                </div>
+                {% endif %}
+
+                <div class="mb-3">
+                    <label class="font-weight-bold">{{ form.username.label}}</label>
+                    <div class="mt-3">
+                        {{form.username}}
+                    </div>
+                </div>
+
+                <div class="mb-3">
+                    <label class="font-weight-bold">{{ form.password.label}}</label>
+                    <div class="mt-3">
+                        {{form.password}}
+                    </div>
+                </div>
+
+                <div class="mb-3 d-grid  justify-content-center col-6 mx-auto ">
+                    <button class="btn btn-success py-2 mb-4 mt-5 font-weight-bold btn-lg" type="submit"
+                        value="Log-in">Sign in</button>
+                </div>
+            </form>
+
+        </div>
+    </div>
+</div>
+
+
+{%endblock%}
